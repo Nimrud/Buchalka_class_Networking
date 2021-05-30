@@ -22,16 +22,18 @@ public class Echoer extends Thread {
 
             while (true) {
                 String echoString = input.readLine();
+                System.out.println("Received client (" + Thread.currentThread().getName() + ") input: " + echoString);
                 if (echoString.equals("exit")) {
                     break;
                 }
-                output.println(echoString);
+                output.println("Server response: " + echoString);
             }
         } catch (IOException e) {
             System.out.println();
         } finally {
             try {
                 socket.close();
+                System.out.println("Connection in " + Thread.currentThread().getName() + " closed");
             } catch (IOException e) {
                 System.out.println("Couldn't close the socket: " + e.getMessage());
             }
