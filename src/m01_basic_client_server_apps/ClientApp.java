@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.Scanner;
 
 // klasy ClientApp i ServerApp uruchamiamy w oddzielnych projektach IntelliJ IDEA
@@ -17,6 +18,9 @@ public class ClientApp {
             // w przypadku uruchamiania na 1 maszynie klienta i serwera,
             // jeśli 'localhost' nie działa, należy wpisać '127.0.0.1'
 
+            socket.setSoTimeout(5000);
+            // timeout - limit czasu na wykonanie operacji
+            // zapobiega blokowaniu (po jego upłynięciu można wysłać zapytanie ponownie, przerwać wykonywanie danej operacji, poinformować użytkownika itp.)
             BufferedReader echoes = new BufferedReader(
                     new InputStreamReader(socket.getInputStream()));
             PrintWriter stringToEcho = new PrintWriter(socket.getOutputStream(), true);
@@ -36,8 +40,10 @@ public class ClientApp {
                 }
             } while (!echoString.equals("exit"));
 
-        } catch (IOException e) {
-            System.out.println("Client exception: " + e.getMessage());
+        } catch (SocketTimeoutException e1) {
+            System.out.println("The socket timed out");
+        } catch (IOException e2) {
+            System.out.println("Client exception: " + e2.getMessage());
         }
     }
 }
