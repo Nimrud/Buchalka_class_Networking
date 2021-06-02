@@ -6,10 +6,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+// HttpURLConnection jest problematyczne w użyciu
+// W zamian można użyć bibliotek, takich jak Apache lub jetty
+
+// od Javy 11 dostępna jest nowa klasa: HTTPClient
+
 public class HttpURLConnection_class {
     public static void main(String[] args) {
         try {
-            URL url = new URL("http://example.org");
+            URL url = new URL("https://www.flickr.com/services/feeds/photos_public.gne?tags=cats");
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");  // nie trzeba tego stosować, bo "GET" jest domyślnym typem
@@ -22,6 +27,7 @@ public class HttpURLConnection_class {
 
             if (responseCode != 200) {
                 System.out.println("Error reading web page");
+                System.out.println("Reason: " + connection.getResponseMessage());
                 return;
             }
 
